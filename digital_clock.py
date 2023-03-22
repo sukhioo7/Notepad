@@ -1,43 +1,46 @@
-import tkinter as tk 
-from datetime import datetime
+import tkinter as tk
+from datetime import datetime as dt
 
-def real_time_date():
-    current_time = datetime.now().strftime('%I : %M : %S %p')
-    real_time.config(text=current_time)
+def real_clock():
+    curr_time = dt.now().strftime("%I:%M:%S %p")
+    real_time.config(text=curr_time)
 
-    current_day = datetime.now().strftime('%A')
-    real_day.config(text=current_day)
+    curr_date = dt.now().strftime("%d-%b-%Y")
+    real_date.config(text=curr_date)
 
-    current_date = datetime.now().strftime(' %d - %b - %Y')
-    real_date.config(text=current_date)
-    
-    root.after(1000,real_time_date)
+    curr_day = dt.now().strftime("%A")
+    real_day.config(text=curr_day)
+
+    root.after(1000,real_clock)
 
 
 root = tk.Tk()
-root.title('Digital Clock')
 root.geometry('500x300')
-root.config(padx=30,pady=30,bg='#00BFFF')
+root.resizable(0,0)
+root.title('Digital Clock')
+root.config(padx=25,pady=20,bg='black')
+# Fixedsys
 
-main_heading = tk.Label(root,text='Digital Clock',font=('MV Boli',34),bg='#00BFFF',fg='#ffdf00')
+heading_digital = tk.Label(text='Digital Clock',font=('Forte',35),fg='white',bg='black')
 
-time_label = tk.Label(root,text="Time : ",font=('Verdana',23),bg='#00BFFF',fg='white')
-day_label = tk.Label(root,text="Day : ",font=('Verdana',23),bg='#00BFFF',fg='white')
-date_label = tk.Label(root,text="Date : ",font=('Verdana',23),bg='#00BFFF',fg='white')
+heading_time = tk.Label(text="Time ",font=('Copperplate Gothic Bold',28),fg='white',bg='black')
+heading_date = tk.Label(text="Date ",font=('Copperplate Gothic Bold',28),fg='white',bg='black')
+heading_day = tk.Label(text="Day ",font=('Copperplate Gothic Bold',28),fg='white',bg='black')
 
-real_time = tk.Label(root,text='',font=('Yu Gothic UI Semibold',23),bg='#00BFFF',fg='white')
-real_day = tk.Label(root,text='',font=('Yu Gothic UI Semibold',23),bg='#00BFFF',fg='white')
-real_date = tk.Label(root,text='',font=('Yu Gothic UI Semibold',23),bg='#00BFFF',fg='white')
+real_time = tk.Label(text='',font=('Fixedsys',28),fg='#00755E',bg='black')
+real_date = tk.Label(text='',font=('Fixedsys',28),fg='#00755E',bg='black')
+real_day = tk.Label(text='',font=('Fixedsys',28),fg='#00755E',bg='black')
 
-main_heading.grid(row=0,column=0,columnspan=2,padx=30)
-time_label.grid(row=1,column=0,padx=30)
-day_label.grid(row=2,column=0,padx=30)
-date_label.grid(row=3,column=0,padx=30)
+heading_digital.grid(row=1,column=1,columnspan=2,pady=10,sticky='w')
 
-real_time.grid(row=1,column=1)
-real_day.grid(row=2,column=1)
-real_date.grid(row=3,column=1)
+heading_time.grid(row=2,column=1,sticky='w')
+heading_date.grid(row=3,column=1,sticky='w')
+heading_day.grid(row=4,column=1,sticky='w')
 
+real_time.grid(row=2,column=2,sticky='w')
+real_date.grid(row=3,column=2,sticky='w')
+real_day.grid(row=4,column=2,sticky='w')
 
-real_time_date()
+real_clock()
+
 root.mainloop()
