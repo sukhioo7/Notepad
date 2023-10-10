@@ -1,50 +1,55 @@
 # pip install googletrans==3.1.0a0
-import tkinter as tk
+import tkinter as tk 
 from googletrans import Translator
 import pyttsx3
 
-class LangTranslator():
-    def lang_translator(self,lang):
-        user_text = text_area.get(0.0,tk.END)
-        translator = Translator()
-        self.result = translator.translate(user_text,dest=lang)
-        translate_result.config(text=self.result.text)
-    
+class Work():
+    def translator_function(self,lang):
+        user_input = textarea.get(0.0,tk.END)
+        trans = Translator()
+        self.result = trans.translate(user_input,dest=lang)
+        translation.config(text=self.result.text)
+
     def speak(self):
         sp = pyttsx3.init()
         if self.result.dest == 'en':
             sp.say(self.result.text)
             sp.runAndWait()
         else:
-            translate_result.config(text="Can't Speak that language!! sorry :(")
+            translation.config(text="Can't Speak that language at this time.")
 
 root = tk.Tk()
-root.geometry('1000x700')
-root.title('Translator')
-root.config(bg='#FFA351')
-root.resizable(0.0,0.0)
+root.geometry('750x600')
+root.config(bg='white')
+root.title('Google Translator')
+work = Work()
 
-obj = LangTranslator()
+heading = tk.Label(text='Google Translator',font=('Harlow Solid Italic',50),bg='white')
+heading.grid(row=1,column=1,columnspan=2,pady=5)
 
-heading = tk.Label(text="Translate Your Language",font=('Segoe UI',40),fg='#CC313D',bg='#FFA351')
-heading.grid(row=1,column=1,columnspan=4)
+trans_lator = tk.Button(text='Translate',font=('Harlow Solid Italic',20),
+                        bg='#0F9D58',fg='white',width=8,relief='flat',command=lambda :work.translator_function('en'))
+trans_lator.grid(row=2,column=1,padx=12)
 
-text_area = tk.Text(font=('Segoe UI',13),height=10,width=100,
-                    bg='#FFBE7B',relief='solid',borderwidth=1)
-text_area.grid(row=2,column=1,padx=40,pady=20,columnspan=4)
+hindi_btn = tk.Button(text='Hindi',font=('Harlow Solid Italic',20)
+                      ,bg='#4285F4',fg='white',width=8,relief='solid',command=lambda :work.translator_function('hindi'))
+hindi_btn.grid(row=3,column=1,padx=12)
 
-trans_btn = tk.Button(text='Translate',font=('Segoe UI',18),bg='#2BAE66' ,fg='white',relief='ridge',width=15,command=lambda :obj.lang_translator('en'))
-pun_btn = tk.Button(text='Punjabi',font=('Segoe UI',18),bg='#CC313D' ,fg='white',relief='ridge',width=15,command=lambda :obj.lang_translator('punjabi'))
-hindi_btn = tk.Button(text='Hindi',font=('Segoe UI',18),bg='#CC313D' ,fg='white',relief='ridge',width=15,command=lambda :obj.lang_translator('hindi'))
-speak_btn = tk.Button(text='Speak',font=('Segoe UI',18),bg='#CC313D', fg='white',relief='ridge',width=15,command=obj.speak)
+punjabi_btn = tk.Button(text='Punjabi',font=('Harlow Solid Italic',20)
+                        ,bg='#DB4437',fg='white',width=8,relief='flat',command=lambda :work.translator_function('punjabi'))
+punjabi_btn.grid(row=4,column=1,padx=12)
 
-trans_btn.grid(row=3,column=1)
-pun_btn.grid(row=3,column=2)
-hindi_btn.grid(row=3,column=3)
-speak_btn.grid(row=3,column=4)
+speak_btn = tk.Button(text='Speak',font=('Harlow Solid Italic',20),
+                      bg='#F4B400',fg='white',width=8,relief='solid',command=work.speak)
+speak_btn.grid(row=5,column=1,padx=12)
 
-translate_result = tk.Label(text=''
-                            ,font=('Segoe UI',15),wraplength=950,bg='#FFA351')
-translate_result.grid(row=4,column=1,columnspan=4,pady=10)
+textarea = tk.Text(relief='solid',font=('Maiandra GD',18),width=40,height=9)
+textarea.grid(row=2,column=2,rowspan=4,pady=10)
+
+sub_heading = tk.Label(text='Translation',font=('Harlow Solid Italic',25),bg='white',fg='#1A5276')
+sub_heading.grid(row=6,column=1,columnspan=2)
+
+translation = tk.Label(text='',font=('Maiandra GD',18),bg='white')
+translation.grid(row=7,column=1,columnspan=2,pady=8)
 
 root.mainloop()
