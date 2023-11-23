@@ -16,7 +16,7 @@ root.resizable(0,0)
 heading = tk.Label(text='Quizz App',font=('Lucida Handwriting',35),bg='#5E716A',fg='white')
 heading.pack(pady=10)
 
-ques_label = tk.Label(text='Q) Which function is use to show output in pyton?',fg='white',font=('Havana',15),bg='#5E716A')
+ques_label = tk.Label(text='Q) Which function is use to show output in python?',fg='white',font=('Havana',15),bg='#5E716A')
 ques_label.pack()
 
 input_area = tk.Text(width=50,height=3,font=('Havana',13),padx=5,pady=5)
