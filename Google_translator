@@ -1,55 +1,68 @@
+import tkinter as tk
 # pip install googletrans==3.1.0a0
-import tkinter as tk 
 from googletrans import Translator
 import pyttsx3
+import gtts
+import pygame
 
-class Work():
-    def translator_function(self,lang):
+class LangTranslator():
+
+    def lang_taranslator(self,lang):
         user_input = textarea.get(0.0,tk.END)
-        trans = Translator()
-        self.result = trans.translate(user_input,dest=lang)
-        translation.config(text=self.result.text)
+        translator = Translator()
+        self.output = translator.translate(user_input,dest=lang)
+        result.config(text=self.output.text)
 
     def speak(self):
-        sp = pyttsx3.init()
-        if self.result.dest == 'en':
-            sp.say(self.result.text)
-            sp.runAndWait()
+        if self.output.dest == 'en':
+            pyttsx3.speak(self.output.text)
+        elif self.output.dest == 'hi':
+            # Create a gTTS object
+            tts = gtts.gTTS(text=self.output.text, lang='hi')
+
+            # Save the audio file
+            tts.save('hindi.mp3')
+
+            # Play the audio file
+            pygame.mixer.init()
+            pygame.mixer.music.load("hindi.mp3")
+            pygame.mixer.music.play()
         else:
-            translation.config(text="Can't Speak that language at this time.")
+            result.config(text="Can't Speak that language now :(")
+
+lt = LangTranslator()
 
 root = tk.Tk()
-root.geometry('750x600')
+root.geometry('900x700')
 root.config(bg='white')
 root.title('Google Translator')
-work = Work()
+tk.Label(text='Google Translator',font=('Impact',50)
+         ,fg='#ECB159',bg='white').grid(row=1,column=1,columnspan=3,pady=20)
 
-heading = tk.Label(text='Google Translator',font=('Harlow Solid Italic',50),bg='white')
-heading.grid(row=1,column=1,columnspan=2,pady=5)
+textarea = tk.Text(font=('Bahnschrift',13),relief='solid',height=10,width=95)
+textarea.grid(row=2,column=1,columnspan=3,padx=20,pady=10)
 
-trans_lator = tk.Button(text='Translate',font=('Harlow Solid Italic',20),
-                        bg='#0F9D58',fg='white',width=8,relief='flat',command=lambda :work.translator_function('en'))
-trans_lator.grid(row=2,column=1,padx=12)
+translate_btn = tk.Button(text='Translate',font=('Impact',20),relief='solid'
+                          ,width=20,bg='#0F9D58',fg='#3F4E4F',command=lambda : lt.lang_taranslator('en'))
+hindi_btn = tk.Button(text='Hindi',font=('Impact',20),relief='solid'
+                          ,width=20,bg='#F4B400',fg='#3F4E4F',command=lambda : lt.lang_taranslator('hi'))
+punjabi_btn = tk.Button(text='Punjabi',font=('Impact',20),relief='solid'
+                          ,width=20,bg='#DB4437',fg='#3F4E4F',command=lambda : lt.lang_taranslator('punjabi'))
 
-hindi_btn = tk.Button(text='Hindi',font=('Harlow Solid Italic',20)
-                      ,bg='#4285F4',fg='white',width=8,relief='solid',command=lambda :work.translator_function('hindi'))
-hindi_btn.grid(row=3,column=1,padx=12)
+translate_btn.grid(row=3,column=1)
+hindi_btn.grid(row=3,column=2)
+punjabi_btn.grid(row=3,column=3)
 
-punjabi_btn = tk.Button(text='Punjabi',font=('Harlow Solid Italic',20)
-                        ,bg='#DB4437',fg='white',width=8,relief='flat',command=lambda :work.translator_function('punjabi'))
-punjabi_btn.grid(row=4,column=1,padx=12)
+speak_btn = tk.Button(text='Speak',font=('Impact',20),relief='solid'
+                          ,width=66,bg='#4285F4',command=lt.speak)
 
-speak_btn = tk.Button(text='Speak',font=('Harlow Solid Italic',20),
-                      bg='#F4B400',fg='white',width=8,relief='solid',command=work.speak)
-speak_btn.grid(row=5,column=1,padx=12)
+speak_btn.grid(row=4,column=1,columnspan=3,pady=10)
 
-textarea = tk.Text(relief='solid',font=('Maiandra GD',18),width=40,height=9)
-textarea.grid(row=2,column=2,rowspan=4,pady=10)
+tk.Label(text='Translation',font=('Impact',20),bg='white'
+         ,fg='#3F4E4F').grid(row=5,column=1,columnspan=3,pady=10)
 
-sub_heading = tk.Label(text='Translation',font=('Harlow Solid Italic',25),bg='white',fg='#1A5276')
-sub_heading.grid(row=6,column=1,columnspan=2)
-
-translation = tk.Label(text='',font=('Maiandra GD',18),bg='white')
-translation.grid(row=7,column=1,columnspan=2,pady=8)
+result = tk.Label(text='',font=('Bahnschrift',18),bg='white',fg='#3F4E4F'
+                  ,wraplength=900)
+result.grid(row=6,column=1,columnspan=3)
 
 root.mainloop()
