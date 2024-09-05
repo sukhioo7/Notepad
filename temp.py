@@ -13,7 +13,7 @@ def fetch_video_info():
 
     info_window = tk.Toplevel(window)
     info_window.title('Video Information')
-    info_window.geometry('1000x700')
+    info_window.geometry('1020x700')
     info_window.config(bg='white')
 
     heading = tk.Label(info_window,text='Video Information',
@@ -32,18 +32,25 @@ Views : {views}
     
     gernal_heading = tk.Label(info_window,text=gernal_info,font=('Helvetica',14),bg='white',
                               justify='left',anchor='e')
-    gernal_heading.grid(row=3, column=1,padx=10)
+    gernal_heading.grid(row=4, column=1,padx=10)
 
-    keyword_area = tk.Text(info_window,width=60,height=4,font=('Helvetica',14),relief='solid',
+    tk.Label(info_window,text='Basic Info',font=('Helvetica',15),bg='white',
+                              justify='left',anchor='e').grid(row=3,column=1)
+    tk.Label(info_window,text='Keywords',font=('Helvetica',15),bg='white',
+                              justify='left',anchor='e').grid(row=3,column=2)
+    keyword_area = tk.Text(info_window,width=55,height=4,font=('Helvetica',14),relief='solid',
                     )
-    keyword_area.grid(row=3, column=2,padx=10)
+    keyword_area.grid(row=4, column=2,padx=30)
 
     keyword_area.delete(0.0,tk.END)
-    keyword_area.insert(0.0, yt.keywords)
+    keyword_area.insert(0.0, ', '.join(yt.keywords))
+    
 
+    tk.Label(info_window,text='Description',font=('Helvetica',15),bg='white',
+                              justify='left',anchor='e').grid(row=5,column=1)
     description_area = tk.Text(info_window,width=88,height=14,font=('Helvetica',14),relief='solid',
                     )
-    description_area.grid(row=4, column=1,padx=10,columnspan=2)
+    description_area.grid(row=6, column=1,padx=30,columnspan=2)
 
     description_area.delete(0.0,tk.END)
     description_area.insert(0.0, yt.description)
