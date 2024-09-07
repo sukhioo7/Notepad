@@ -1,85 +1,32 @@
-import tkinter as tk
-from pytubefix import YouTube
-from pytubefix.cli import on_progress
+import requests
 
-def fetch_video_info():
-    link = link_entry.get()
-    yt = YouTube(link, on_progress_callback = on_progress)
+def check_link_with_addhar(addhar_number):
+    url = "https://pan-number-verification-api-using-aadhaar-number.p.rapidapi.com/api/validation/aadhaar_to_pan"
 
-    title = yt.title
-    author = yt.author
-    length = f"{yt.length // 60} minutes {yt.length % 60} seconds"
-    views = f"{yt.views:,}"  # Add commas to the view count
+    payload = {
+        "aadhaar": addhar_number,
+        "consent": "y",
+        "consent_text": "I hear by declare my consent agreement for fetching my information via AITAN Labs API"
+    }
+    headers = {
+        "x-rapidapi-key": "68f0ae5d48msh22c4d73470c8443p181467jsn1a28b703a22b",
+        "x-rapidapi-host": "pan-number-verification-api-using-aadhaar-number.p.rapidapi.com",
+        "Content-Type": "application/json"
+    }
 
-    info_window = tk.Toplevel(window)
-    info_window.title('Video Information')
-    info_window.geometry('1020x700')
-    info_window.config(bg='white')
+    response = requests.post(url, json=payload, headers=headers)
 
-    heading = tk.Label(info_window,text='Video Information',
-                    font=('Harlow Solid Italic', 55), bg='white', fg='#C63C51')
-    heading.grid(row=1, column=1,padx=63,pady=30,columnspan=2)
+    data = response.json()
+    text = f'''
+Aadhaar Number : {data['aadhaar']}
+Link Status : {data['status']}
+PAN Linked : Your PAN card is linked with your addhar card.
+PAN Card Number : {data['result']['pan']}
+''' 
+    return text
 
-    heading = tk.Label(info_window,text=title,
-                    font=('Helvetica', 23,'bold'),wraplength=950,justify='left' ,bg='white', fg='#173B45')
-    heading.grid(row=2, column=1,padx=10,columnspan=2)
+addhar_number = input("Enter your Aadhaar number: ")
 
-    gernal_info = f'''
-Author : {author}
-Length : {length}
-Views : {views}
-'''
-    
-    gernal_heading = tk.Label(info_window,text=gernal_info,font=('Helvetica',14),bg='white',
-                              justify='left',anchor='e')
-    gernal_heading.grid(row=4, column=1,padx=10)
+result = check_link_with_addhar(addhar_number)
 
-    tk.Label(info_window,text='Basic Info',font=('Helvetica',15),bg='white',
-                              justify='left',anchor='e').grid(row=3,column=1)
-    tk.Label(info_window,text='Keywords',font=('Helvetica',15),bg='white',
-                              justify='left',anchor='e').grid(row=3,column=2)
-    keyword_area = tk.Text(info_window,width=55,height=4,font=('Helvetica',14),relief='solid',
-                    )
-    keyword_area.grid(row=4, column=2,padx=30)
-
-    keyword_area.delete(0.0,tk.END)
-    keyword_area.insert(0.0, ', '.join(yt.keywords))
-    
-
-    tk.Label(info_window,text='Description',font=('Helvetica',15),bg='white',
-                              justify='left',anchor='e').grid(row=5,column=1)
-    description_area = tk.Text(info_window,width=88,height=14,font=('Helvetica',14),relief='solid',
-                    )
-    description_area.grid(row=6, column=1,padx=30,columnspan=2)
-
-    description_area.delete(0.0,tk.END)
-    description_area.insert(0.0, yt.description)
-
-
-
-window = tk.Tk()
-window.title('YoyTube Downloader')
-window.geometry('800x500')
-window.config(bg='white')
-
-heading = tk.Label(text='YouTube Downloader',
-                    font=('Harlow Solid Italic', 55), bg='white', fg='#C63C51')
-heading.grid(row=1, column=1,padx=63,pady=50)
-
-sub_heading = tk.Label(text='Paste your link here...',font=('Helvetica',22,'italic'),
-                       bg='white',fg='#758694')
-sub_heading.grid(row=2, column=1,padx=63)
-
-link_entry = tk.Entry(font=('Helvetica', 18), width=40, bg='lightgray', relief='flat')
-link_entry.grid(row=3, column=1,pady=20)
-
-get_info_btn = tk.Button(text='Get info',font=('Harlow Solid Italic',20),
-                         bg='#522258',fg='white',width=20,relief='solid',command=fetch_video_info)
-get_info_btn.grid(row=4, column=1)
-
-download_btn = tk.Button(text='Download Video',font=('Harlow Solid Italic',20),
-                         bg='#8C3061',fg='white',width=20,relief='solid')
-download_btn.grid(row=5, column=1,pady=10)
-
-
-window.mainloop()
+print(result)
