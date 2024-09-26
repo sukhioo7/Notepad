@@ -1,32 +1,31 @@
-import requests
+import customtkinter as ctk
 
-def check_link_with_addhar(addhar_number):
-    url = "https://pan-number-verification-api-using-aadhaar-number.p.rapidapi.com/api/validation/aadhaar_to_pan"
+ctk.set_appearance_mode('light')
 
-    payload = {
-        "aadhaar": addhar_number,
-        "consent": "y",
-        "consent_text": "I hear by declare my consent agreement for fetching my information via AITAN Labs API"
-    }
-    headers = {
-        "x-rapidapi-key": "68f0ae5d48msh22c4d73470c8443p181467jsn1a28b703a22b",
-        "x-rapidapi-host": "pan-number-verification-api-using-aadhaar-number.p.rapidapi.com",
-        "Content-Type": "application/json"
-    }
+def say_hello():
+    print('Hello')
 
-    response = requests.post(url, json=payload, headers=headers)
+window = ctk.CTk()
+window.title('WikipediA')
+window.geometry('800x650')
 
-    data = response.json()
-    text = f'''
-Aadhaar Number : {data['aadhaar']}
-Link Status : {data['status']}
-PAN Linked : Your PAN card is linked with your addhar card.
-PAN Card Number : {data['result']['pan']}
-''' 
-    return text
+heading = ctk.CTkLabel(window,text='WikipediA',font=('Forte',100),
+                       text_color='#055E68')
+heading.pack(pady=50)
 
-addhar_number = input("Enter your Aadhaar number: ")
+sub_heading = ctk.CTkLabel(window,text='Search Here...',font=('Script MT Bold',30),
+                           text_color=('#333644','#EEEEEE'))
+sub_heading.pack()
 
-result = check_link_with_addhar(addhar_number)
+user_input = ctk.CTkEntry(window,placeholder_text='Ex : Samsung',
+                          font=("Bahnschrift",22),width=400,
+                          placeholder_text_color='#90A4AE',height=40)
+user_input.pack(pady=15)
 
-print(result)
+search_btn = ctk.CTkButton(window,text='Search',font=('Script MT Bold',30),
+                           width=400,fg_color='#055E68',hover_color='#006159',
+                           command=say_hello)
+
+search_btn.pack()
+
+window.mainloop()
