@@ -1,36 +1,44 @@
-import tkinter as tk
+import customtkinter as ctk
 import wikipedia
 
-def wiki_pedia():
-    user_search = search_input.get()
+ctk.set_appearance_mode('system')
+
+def get_wikipedia_data():
+    query = user_input.get() # same as input() 
     try:
-        result = wikipedia.summary(user_search,sentences=3)
-        result_label.config(text=result)
+        data = wikipedia.summary(query,sentences=3)
+        output.configure(text=data,fg_color=('#C4DAD2','#16423C'),pady=15,padx=10)
     except:
-        result_label.config(text='No Data Found',font=('Harlow Solid Italic',25)
-                            ,pady=20,fg='#CE0601')
+        output.configure(text='No Data Found',fg_color=('#C4DAD2','#16423C'),pady=15,padx=10)
 
 
-window = tk.Tk()
-window.geometry('800x600')
+window = ctk.CTk()
 window.title('WikipediA')
-window.config(bg='#FCF5E5')
+window.geometry('800x650')
 
-title = tk.Label(text='WikipediA',font=('Harlow Solid Italic',75),fg='#CE0601',bg='#FCF5E5')
-title.pack()
+heading = ctk.CTkLabel(window,text='WikipediA',font=('Forte',100),
+                       text_color='#055E68')
+heading.pack(pady=50)
 
-sub_title = tk.Label(text='Search Here...',font=('Harlow Solid Italic',25),fg='#B7B9AF',bg='#FCF5E5')
-sub_title.pack()
+sub_heading = ctk.CTkLabel(window,text='Search Here...',font=('Script MT Bold',30),
+                           text_color=('#333644','#EEEEEE'))
+sub_heading.pack()
 
+user_input = ctk.CTkEntry(window,placeholder_text='Ex : Samsung',
+                          font=("Bahnschrift",22),width=400,
+                          placeholder_text_color='#90A4AE',height=40)
+user_input.pack(pady=15)
 
-search_input = tk.Entry(font=('Bahnschrift Light Condensed',25),width=30,bg='#B7B9AF')
-search_input.pack()
+search_btn = ctk.CTkButton(window,text='Search',font=('Script MT Bold',30),
+                           width=400,fg_color=('#055E68'),hover_color='#006159',
+                           command=get_wikipedia_data)
 
-btn = tk.Button(text='Search',font=('Harlow Solid Italic',23)
-                ,relief='groove',bg='#4e5454',width=22,fg='white',command=wiki_pedia)
-btn.pack(pady=5)
+search_btn.pack()
 
-result_label = tk.Label(text='',font=('Bahnschrift Light Condensed',15),bg='#FCF5E5',wraplength=700)
-result_label.pack()
+output = ctk.CTkLabel(window,text='',font=('Script MT Bold',21),
+                      wraplength=700,corner_radius=10)
+output.pack(pady = 10)
 
 window.mainloop()
+
+
