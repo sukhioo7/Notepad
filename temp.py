@@ -1,50 +1,46 @@
 import customtkinter as ctk
-import wikipedia
+from googletrans import Translator
 
-ctk.set_appearance_mode('system')
+def lang_translation(lang):
+    user_input = text_area.get(0.0,ctk.END)
+    translator = Translator()
+    result = translator.translate(user_input,dest=lang)
+    output.configure(text=result.text,fg_color='#B7E0FF')
 
-def get_wikipedia_data():
-    query = user_input.get() # same as input() 
-    try:
-        data = wikipedia.summary(query,sentences=3)
-        output.configure(text=data,fg_color=('#C4DAD2','#16423C'),pady=15,padx=10)
-    except:
-        output.configure(text='No Data Found',fg_color=('#C4DAD2','#16423C'),pady=15,padx=10)
+window  = ctk.CTk()
+window.geometry('845x650')
 
+dark_btn = ctk.CTkButton(window,text='Dark Mode',font=('Arial',12,'bold'),height=30,width=90,
+                              fg_color='black',command=lambda : ctk.set_appearance_mode('dark'))
+dark_btn.grid(row=0,column=1,pady=10)
 
-window = ctk.CTk()
-window.title('YouTube Downloader')
-window.geometry('800x550')
+light_btn = ctk.CTkButton(window,text='light Mode',font=('Arial',12,'bold'),height=30,width=90,
+                              fg_color='black',command=lambda : ctk.set_appearance_mode('light'))
+light_btn.grid(row=0,column=3,pady=10)
 
-heading = ctk.CTkLabel(window,text='YouTube Downloader',font=('Script MT Bold',80),
-                       text_color='#D91656')
-heading.grid(row=1,column=1,pady=50)
+heading = ctk.CTkLabel(window,text='Google Translator',font=('Arial',50))
+heading.grid(row=1,column=1,pady=20,columnspan=3)
 
-sub_heading = ctk.CTkLabel(window,text='Paste your link here...',font=('Script MT Bold',30),
-                           text_color=('#333644','#EEEEEE'))
-sub_heading.grid(row=2,column=1)
+text_area = ctk.CTkTextbox(window,border_width=2,font=('Arial',17),width=800)
+text_area.grid(row=2,column=1,padx=20,pady=20,columnspan=3)
 
-user_input = ctk.CTkEntry(window,placeholder_text='Ex : http://www.youtube.com/sdfs',
-                          font=("Bahnschrift",22),width=400,
-                          placeholder_text_color='#90A4AE',height=40)
-user_input.grid(row=3,column=1,pady=15)
+translate_btn = ctk.CTkButton(window,text='Translate',font=('Arial',30,'bold'),height=60,width=200,
+                              fg_color='#34A853',command=lambda : lang_translation('english'))
+translate_btn.grid(row=3,column=1)
 
-download_video = ctk.CTkButton(window,text='Download Video',font=('Script MT Bold',30),
-                           width=400,fg_color=('#055E68'),hover_color='#006159',
-                           command=get_wikipedia_data)
+hindi_btn = ctk.CTkButton(window,text='Hindi',font=('Arial',30,'bold'),height=60,width=200,
+                          fg_color='#4285F4',command=lambda : lang_translation('hindi'))
+hindi_btn.grid(row=3,column=2)
 
-download_video.grid(row=4,column=1)
+punjabi_btn = ctk.CTkButton(window,text='punjabi',font=('Arial',30,'bold'),height=60,width=200,
+                            fg_color='#EA4335',command=lambda : lang_translation('punjabi'))
+punjabi_btn.grid(row=3,column=3)
 
-download_audio = ctk.CTkButton(window,text='Download Audio',font=('Script MT Bold',30),
-                           width=400,fg_color=('#055E68'),hover_color='#006159',
-                           command=get_wikipedia_data)
+sub_heading = ctk.CTkLabel(window,text='Translation',font=('Arial',20))
+sub_heading.grid(row=4,column=1,columnspan=3,pady=24)
 
-download_audio.grid(row=5,column=1)
-
-output = ctk.CTkLabel(window,text='',font=('Script MT Bold',21),
-                      wraplength=700,corner_radius=10)
-output.grid(row=6,column=1,pady = 10)
+output = ctk.CTkLabel(window,text='',font=('Arial',20),padx=20,pady=20,
+                      corner_radius=10,wraplength=700)
+output.grid(row=5,column=1,columnspan=3)
 
 window.mainloop()
-
-
